@@ -1,4 +1,3 @@
-import sqlite3
 from initdb.initdatabase import PATH_DB, open_db_and_create_cursor
 
 
@@ -8,6 +7,7 @@ def create_books_with_tuples_db_datas(tuples_books):
         book = Book(title=tuple_book[1], author=tuple_book[2], publication_date=tuple_book[3],borrower_id=tuple_book[4], id=tuple_book[0])
         books.append(book)
     return books
+
 
 def get_books_from_db():
     conn, cursor = open_db_and_create_cursor()

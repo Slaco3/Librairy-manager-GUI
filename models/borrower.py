@@ -1,4 +1,3 @@
-import sqlite3
 from initdb.initdatabase import PATH_DB, open_db_and_create_cursor
 
 
@@ -67,9 +66,9 @@ class Borrower:
         conn.commit()
         conn.close()
 
-    def update_book_id_in_db(self, id):
+    def update_book_id_in_db(self, new_id):
         conn, cursor = open_db_and_create_cursor()
-        cursor.execute("UPDATE borrower SET book_id=? WHERE last_name=? and first_name=?",(id, self.last_name, self.first_name))
+        cursor.execute("UPDATE borrower SET book_id=? WHERE last_name=? and first_name=?",(new_id, self.last_name, self.first_name))
         conn.commit()
         conn.close()
 

@@ -1,10 +1,8 @@
-
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QListWidget, QListWidgetItem, QInputDialog, QMessageBox, QLabel
 
 
 from models.book import get_free_books_from_db
 from models.borrower import get_borrower_by_last_name_and_first_name_from_db
-
 
 
 class BorrowTab(QWidget):
@@ -13,11 +11,10 @@ class BorrowTab(QWidget):
         self.create_widgets()
         self.setup_layouts()
         self.setup_connections()
-        # self.setup_shortcuts()
         self.populate_lw_free_books()
 
     def create_widgets(self):
-        self.label_free_book = QLabel("Liste des livres disponibles")
+        self.label_free_book = QLabel("Liste des livres disponibles :")
         self.lw_free_book = QListWidget()
         self.btn_borrow_book = QPushButton("Prêter le livre")
 
@@ -33,26 +30,26 @@ class BorrowTab(QWidget):
     def borrow_book(self):
         if not self.lw_free_book.currentItem():
             return
+        
         last_name, last_name_result = QInputDialog.getText(self, "Nom du client emprunteur", "Entrer le nom du client")
+        if not last_name and last_name_result:
+            return
 
         first_name, first_name_result = QInputDialog.getText(self, "Prénom du client emprunteur", "Entrer le prénom du client")
-
-        if last_name and last_name_result and first_name and first_name_result:
-            try:
-                borrower = get_borrower_by_last_name_and_first_name_from_db(last_name.lower().strip(), first_name.lower().strip())
-            except TypeError:
-                print("Ce client n'existe pas")
-                QMessageBox.information(self,"Client inconnu", "Ce client n'existe pas")
-                return
-            if borrower.book_id is not None:
-                print("Ce client possède déjà un livre")
-                QMessageBox.information(self,"Prêt impossible", "Ce client a déja emprunté un livre")
-                return
-        else:
+        if not first_name and first_name_result:
             return
+
+        try:
+            borrower = get_borrower_by_last_name_and_first_name_from_db(last_name.lower().strip(), first_name.lower().strip())
+        except TypeError:
+            QMessageBox.information(self,"Client inconnu", "Ce client n'existe pas")
+            return
+        if borrower.book_id is not None:
+            QMessageBox.information(self,"Prêt impossible", "Ce client a déja emprunté un livre")
+            return
+       
         item = self.lw_free_book.currentItem()
         book = item.book
-        print(borrower.__dict__)
 
         book.borrower_id = borrower.id
         borrower.book_id = book.id
