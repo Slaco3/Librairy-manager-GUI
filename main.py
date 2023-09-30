@@ -4,9 +4,13 @@ from initdb.initdatabase import create_db
 from windows.main_window import Window
 
 
-create_db()
+def run():
+    create_db()
+    app = QApplication()
+    win = Window()
+    win.show()
+    app.exec()
 
-app = QApplication()
-win = Window()
-win.show()
-app.exec()
+
+if __name__ == "__main__":
+    run()
