@@ -1,8 +1,8 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QListWidget, QListWidgetItem, QMessageBox, QLabel
 
 
-from book import get_borrowed_books_from_db
-from borrower import get_borrower_with_id
+from models.book import get_borrowed_books_from_db
+from models.borrower import get_borrower_with_id
 
 
 class GiveBackTab(QWidget):

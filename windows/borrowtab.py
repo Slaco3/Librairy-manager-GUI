@@ -2,8 +2,8 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QListWidget, QListWidgetItem, QInputDialog, QMessageBox, QLabel
 
 
-from book import get_free_books_from_db
-from borrower import get_borrower_by_last_name_and_first_name_from_db
+from models.book import get_free_books_from_db
+from models.borrower import get_borrower_by_last_name_and_first_name_from_db
 
 
 

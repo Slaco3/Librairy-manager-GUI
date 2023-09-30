@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLineEdit, QLis
 from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtCore import Qt
 
-from borrower import Borrower, get_borrowers_from_db
+from models.borrower import Borrower, get_borrowers_from_db
 
 
 class BorrowerTab(QWidget):

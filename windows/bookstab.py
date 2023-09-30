@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QLineEdit, QLis
 from PySide6.QtGui import QShortcut, QKeySequence
 from PySide6.QtCore import Qt
 
-from book import Book, get_books_from_db
+from models.book import Book, get_books_from_db
 
 
 class BooksTab(QWidget):

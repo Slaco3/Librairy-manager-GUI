@@ -1,5 +1,5 @@
 import sqlite3
-from database import PATH_DB
+from initdb.initdatabase import PATH_DB
 
 
 def create_books_with_tuples_db_datas(tuples_books):
@@ -25,7 +25,6 @@ def get_free_books_from_db():
     tuples_books = cursor.fetchall()
     conn.close()
     return create_books_with_tuples_db_datas(tuples_books)
-
 
 
 def get_borrowed_books_from_db():

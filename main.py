@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QApplication
 
-from database import create_db
+from initdb.initdatabase import create_db
 from windows.main_window import Window
 
 

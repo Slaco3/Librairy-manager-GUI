@@ -1,5 +1,5 @@
 import sqlite3
-from database import PATH_DB
+from initdb.initdatabase import PATH_DB
 
 
 def get_borrowers_from_db():
@@ -45,26 +45,20 @@ class Borrower:
 
     def __repr__(self):
         return self.last_name 
-    
-    def _get_borrowers_last_name_list_from_db(self):
-        borrowers = get_borrowers_from_db()
-        borrowers_last_names = [borrower.last_name for borrower in borrowers]
-        return borrowers_last_names
-    
-    def _get_borrowers_first_name_list_from_db(self):
-        borrowers = get_borrowers_from_db()
-        borrowers_first_names = [borrower.first_name for borrower in borrowers]
-        return borrowers_first_names
-    
-    def save_in_db(self):
+
+    def exist_in_db(self):
         conn = sqlite3.connect(PATH_DB)
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM borrower WHERE last_name = ? AND first_name = ?", (self.last_name, self.first_name))
         existing_borrower = cursor.fetchone()
         conn.close()
         if existing_borrower:
-            return False
-            
+            return True
+
+    def save_in_db(self):
+        if self.exist_in_db():
+            return False  
+               
         conn = sqlite3.connect(PATH_DB)
         cursor = conn.cursor()
         cursor.execute("INSERT INTO borrower (last_name, first_name, birth_date) VALUES (?,?,?)",(self.last_name, self.first_name,self.birth_date))
