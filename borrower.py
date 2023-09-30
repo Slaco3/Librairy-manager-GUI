@@ -14,14 +14,6 @@ def get_borrowers_from_db():
         borrowers.append(borrower)
     return borrowers
 
-# def get_borrower_by_last_name_from_db(last_name):
-#     conn = sqlite3.connect(PATH_DB)
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM borrower WHERE last_name=?", (last_name,))
-#     tuple_borrower = cursor.fetchone()
-#     conn.close()
-#     borrower = Borrower(tuple_borrower[1], tuple_borrower[2], tuple_borrower[3], tuple_borrower[4], tuple_borrower[0])
-#     return borrower
 
 def get_borrower_by_last_name_and_first_name_from_db(last_name, first_name):
     conn = sqlite3.connect(PATH_DB)
@@ -31,6 +23,7 @@ def get_borrower_by_last_name_and_first_name_from_db(last_name, first_name):
     conn.close()
     borrower = Borrower(tuple_borrower[1], tuple_borrower[2], tuple_borrower[3], tuple_borrower[4], tuple_borrower[0])
     return borrower
+
 
 def get_borrower_with_id(id):
     conn = sqlite3.connect(PATH_DB)

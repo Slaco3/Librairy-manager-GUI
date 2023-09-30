@@ -269,7 +269,6 @@ class GiveBackTab(QWidget):
         self.tab4_layout.addWidget(self.lw_borrowed_book)
         self.tab4_layout.addWidget(self.btn_give_back_book)
 
-
     def setup_connections(self):
         self.btn_give_back_book.clicked.connect(self.recover_book)
 
@@ -277,7 +276,7 @@ class GiveBackTab(QWidget):
         books = get_borrowed_books_from_db()
         for book in books:
             borrower = get_borrower_with_id(book.borrower_id)
-            lw_item = QListWidgetItem(book.title.title() + " de " + book.author.upper() + " (" + borrower.first_name.title() + " " + borrower.last_name.upper() + " )")
+            lw_item = QListWidgetItem(book.title.title() + " de " + book.author.upper() + " (" + borrower.first_name.title() + " " + borrower.last_name.upper() + ")")
             lw_item.book = book 
             self.lw_borrowed_book.addItem(lw_item)
 

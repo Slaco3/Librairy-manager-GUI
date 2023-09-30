@@ -2,18 +2,21 @@ import sqlite3
 from database import PATH_DB
 
 
-def get_books_from_db():
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM books")
-    tuples_books = cursor.fetchall()
-    conn.close()
+def create_books_with_tuples_db_datas(tuples_books):
     books = []
     for tuple_book in tuples_books:
         book = Book(title=tuple_book[1], author=tuple_book[2], publication_date=tuple_book[3],borrower_id=tuple_book[4], id=tuple_book[0])
         books.append(book)
     return books
 
+def get_books_from_db():
+    conn = sqlite3.connect(PATH_DB)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM books")
+    tuples_books = cursor.fetchall()
+    conn.close()
+    return create_books_with_tuples_db_datas(tuples_books)
+    
 
 def get_free_books_from_db():
     conn = sqlite3.connect(PATH_DB)
@@ -21,11 +24,9 @@ def get_free_books_from_db():
     cursor.execute("SELECT * FROM books WHERE borrower_id IS NULL")
     tuples_books = cursor.fetchall()
     conn.close()
-    books = []
-    for tuple_book in tuples_books:
-        book = Book(title=tuple_book[1], author=tuple_book[2], publication_date=tuple_book[3],borrower_id=tuple_book[4], id=tuple_book[0])
-        books.append(book)
-    return books
+    return create_books_with_tuples_db_datas(tuples_books)
+
+
 
 def get_borrowed_books_from_db():
     conn = sqlite3.connect(PATH_DB)
@@ -33,20 +34,7 @@ def get_borrowed_books_from_db():
     cursor.execute("SELECT * FROM books WHERE borrower_id IS NOT NULL")
     tuples_books = cursor.fetchall()
     conn.close()
-    books = []
-    for tuple_book in tuples_books:
-        book = Book(title=tuple_book[1], author=tuple_book[2], publication_date=tuple_book[3],borrower_id=tuple_book[4], id=tuple_book[0])
-        books.append(book)
-    return books
-
-
-# def get_book_id_from_db(title):
-#     conn = sqlite3.connect(PATH_DB)
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT id FROM books WHERE title=?", (title,))
-#     book_id = cursor.fetchone()
-#     conn.close()
-#     return book_id[0]
+    return create_books_with_tuples_db_datas(tuples_books)
 
 
 class Book:
@@ -83,7 +71,6 @@ class Book:
         conn.commit()
         conn.close()
     
-
     def update_borrower_id_in_db(self, new_id):
         conn = sqlite3.connect(PATH_DB)
         cursor = conn.cursor()
