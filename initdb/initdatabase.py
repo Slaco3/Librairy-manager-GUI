@@ -25,6 +25,9 @@ def create_db():
     conn.close()
 
 
-
+def open_db_and_create_cursor():
+    conn = sqlite3.connect(PATH_DB)
+    cursor= conn.cursor()
+    return conn, cursor
 
 

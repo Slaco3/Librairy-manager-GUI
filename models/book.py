@@ -1,5 +1,5 @@
 import sqlite3
-from initdb.initdatabase import PATH_DB
+from initdb.initdatabase import PATH_DB, open_db_and_create_cursor
 
 
 def create_books_with_tuples_db_datas(tuples_books):
@@ -10,8 +10,7 @@ def create_books_with_tuples_db_datas(tuples_books):
     return books
 
 def get_books_from_db():
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM books")
     tuples_books = cursor.fetchall()
     conn.close()
@@ -19,8 +18,7 @@ def get_books_from_db():
     
 
 def get_free_books_from_db():
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM books WHERE borrower_id IS NULL")
     tuples_books = cursor.fetchall()
     conn.close()
@@ -28,8 +26,7 @@ def get_free_books_from_db():
 
 
 def get_borrowed_books_from_db():
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM books WHERE borrower_id IS NOT NULL")
     tuples_books = cursor.fetchall()
     conn.close()
@@ -56,23 +53,21 @@ class Book:
         books_titles = self._get_books_titles_list_from_db()
         if self.title in books_titles:
             return False
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("INSERT INTO books (title, author, publication_date) VALUES(?,?,?)",(self.title, self.author, self.publication_date))
         conn.commit()
         conn.close()
         return True
 
     def delete_in_db(self):
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("DELETE FROM books WHERE title=?", (self.title,))
         conn.commit()
         conn.close()
     
     def update_borrower_id_in_db(self, new_id):
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("UPDATE books SET borrower_id = ? WHERE title=?",(new_id, self.title))
         conn.commit()
         conn.close()

@@ -1,10 +1,9 @@
 import sqlite3
-from initdb.initdatabase import PATH_DB
+from initdb.initdatabase import PATH_DB, open_db_and_create_cursor
 
 
 def get_borrowers_from_db():
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM borrower")
     tuples_borrowers = cursor.fetchall()
     conn.close()
@@ -16,8 +15,7 @@ def get_borrowers_from_db():
 
 
 def get_borrower_by_last_name_and_first_name_from_db(last_name, first_name):
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM borrower WHERE last_name=? AND first_name=? ", (last_name, first_name))
     tuple_borrower = cursor.fetchone()
     conn.close()
@@ -26,8 +24,7 @@ def get_borrower_by_last_name_and_first_name_from_db(last_name, first_name):
 
 
 def get_borrower_with_id(id):
-    conn = sqlite3.connect(PATH_DB)
-    cursor = conn.cursor()
+    conn, cursor = open_db_and_create_cursor()
     cursor.execute("SELECT * FROM borrower WHERE id=?", (id,))
     tuple_borrower = cursor.fetchone()
     conn.close()
@@ -47,8 +44,7 @@ class Borrower:
         return self.last_name 
 
     def exist_in_db(self):
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("SELECT * FROM borrower WHERE last_name = ? AND first_name = ?", (self.last_name, self.first_name))
         existing_borrower = cursor.fetchone()
         conn.close()
@@ -59,23 +55,20 @@ class Borrower:
         if self.exist_in_db():
             return False  
                
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("INSERT INTO borrower (last_name, first_name, birth_date) VALUES (?,?,?)",(self.last_name, self.first_name,self.birth_date))
         conn.commit()
         conn.close()
         return True
 
     def delete_in_db(self):
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("DELETE FROM borrower WHERE last_name=?", (self.last_name,))
         conn.commit()
         conn.close()
 
     def update_book_id_in_db(self, id):
-        conn = sqlite3.connect(PATH_DB)
-        cursor = conn.cursor()
+        conn, cursor = open_db_and_create_cursor()
         cursor.execute("UPDATE borrower SET book_id=? WHERE last_name=? and first_name=?",(id, self.last_name, self.first_name))
         conn.commit()
         conn.close()
