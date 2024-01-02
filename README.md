@@ -1,4 +1,4 @@
-# Application de Liste de Tâches (TO-DO)
+# Gestionnaire de bibliothèque
 
 ## Description
 
